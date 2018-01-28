@@ -114,10 +114,21 @@ for i in range(0,len(content)):
 print("\tENDFILE")
 
 print("\n\nParser:")
-print("{0:-^90}".format(""))
+print("{0:-^94}".format(""))
 
+
+
+
+'''grammar={'pronoun': [['he'], ['she']], 'proper-noun': [['mary'], ['john']], 'VP': [['verb'], ['verb', 'NP'], ['verb', 'NP', 'PP'], ['verb', 'PP'], ['VP', 'PP']], 'verb': [['do'], ['work'], ['book']], 'aux': [['can'], ['will']], 'PP': [['prep', 'NP']], 'det': [['the'], ['that']], 'S': [['NP', 'VP'], ['aux', 'NP', 'VP'], ['VP']], 'prep': [['in'], ['on'], ['at']], 'NP': [['pronoun'], ['proper-noun'], ['det', 'NOMINAL']], 'NOMINAL': [['noun'], ['NOMINAL', 'noun'], ['NOMINAL', 'PP']], 'noun': [['book'], ['flight']]}
+
+'''
+
+grammar={'det': ['the', 'that'], 'verb': ['do', 'work', 'book'], 'S': [['NP', 'VP'], ['aux', 'NP', 'VP'], ['VP']], 'NOMINAL': [['noun'], ['NOMINAL', 'noun'], ['NOMINAL', 'PP']], 'prep': ['in', 'on', 'at'], 'aux': ['can', 'will'], 'PP': [['prep', 'NP']], 'VP': [['verb'], ['verb', 'NP'], ['verb', 'NP', 'PP'], ['verb', 'PP'], ['VP', 'PP']], 'pronoun': ['he', 'she'], 'noun': ['book', 'flight'], 'proper-noun': ['mary', 'john'], 'NP': [['pronoun'], ['proper-noun'], ['det', 'NOMINAL']]}
+
+
+'''
 grammar = {
-    "ROOT": [["S"]],
+	"ROOT": [["S"]],
     "S": [
         ["NP", "VP"],
         ["aux", "NP", "VP"],
@@ -125,8 +136,7 @@ grammar = {
     ],
     "NP": [
         ["pronoun"],
-        ["noun"],
-	["proper-noun"],
+        ["proper-noun"],
         ["det", "NOMINAL"]
     ],
     "NOMINAL": [
@@ -142,17 +152,17 @@ grammar = {
         ["VP", "PP"]
     ],
     "PP": [
-        ["prepos", "NP"]
+        ["prep", "NP"]
     ],
     "det": {"that", "this", "a"},
     "noun": {"flight", "meal", "money", "gift", "astronomers", "stars", "ears", "world", "india", "me"},
     "verb": {"book", "include", "prefer", "saw", "hello"},
     "pronoun": {"i", "she", "me"},
-    "proper-noun":{"joey","shail"},
+    "proper-noun":{"shail","joey"},
     "aux": {"does"},
-    "prepos": {"from", "to", "on", "near", "through", "with"}
+    "prep": {"from", "to", "on", "near", "through", "with"}
 }
-
+'''
 
 charts = [[{
     "lhs": "Root",
@@ -164,7 +174,7 @@ charts = [[{
 }]]
 
 
-input_arr ="shail book that flight".split()+[""]#input("\n\n\n\tEnter a sentence : ").split() + [""]
+input_arr ="book that flight".split()+[""]#input("\n\n\n\tEnter a sentence : ").split() + [""]
 
 for curr_state in range(len(input_arr)):
 
@@ -182,3 +192,6 @@ for curr_state in range(len(input_arr)):
 
 
 print_charts(charts[:-1], input_arr)
+
+print("{0:-^94}".format(""))
+print(grammar['prep'])
