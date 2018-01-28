@@ -1,5 +1,5 @@
 rules = {
-    #"ROOT": [["S"]],
+    "ROOT": [["S"]],
     "S": [
         ["NP", "VP"],
         ["aux", "NP", "VP"],

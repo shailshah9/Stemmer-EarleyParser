@@ -1,5 +1,4 @@
 import re
-import sys
 import nltk
 from nltk.stem.snowball import SnowballStemmer
 from pprint import pprint
@@ -13,7 +12,7 @@ def predictor(rule, state):
         "state": state,
         "op": "Predictor",
         "completer": []
-    } for rhs in grammar[rule["rhs"][rule["dot"]]]] if rule["rhs"][rule["dot"]].isupper() else []
+    } for rhs in rules[rule["rhs"][rule["dot"]]]] if rule["rhs"][rule["dot"]].isupper() else []
 
 
 def scanner(rule, next_input):
@@ -24,7 +23,7 @@ def scanner(rule, next_input):
         "state": rule["state"],
         "op": "Scanner",
         "completer": []
-    }] if rule["rhs"][rule["dot"]].islower() and next_input in grammar[rule["rhs"][rule["dot"]]] else []
+    }] if rule["rhs"][rule["dot"]].islower() and next_input in rules[rule["rhs"][rule["dot"]]] else []
 
 
 def completer(rule, charts):
@@ -48,7 +47,7 @@ def print_charts(charts, inp):
     i=0
     for chart_no, chart in zip(range(len(charts)), charts):
         print("Chart "+str(chart_no)+"\t\n".join(map(
-           lambda x: "\t |  {0:>10}  -> {1:<19}|{2:^20}|{3:^25}|".format(
+           lambda x: "\t| {0:>10} --> {1:<19}|{2:^20}|{3:^25}|".format(
                 x["lhs"], 
                 " ".join(x["rhs"][:x["dot"]] + ["*"] + x["rhs"][x["dot"]:]),
                 "[" + str(x["state"]) + "," + str(chart_no) + "]",
@@ -77,7 +76,7 @@ def checkInputType(token):
 		return token+" STRING";
 	return "";
 
-with open(sys.argv[1]) as f:
+with open('t10.dat') as f:
 	content = f.readlines()
 	#print(f)
 	
@@ -87,36 +86,29 @@ for n,i in enumerate(content):
 	s=s.replace("."," .")
 	content[n]=s.replace(";"," ; ")
 print("\n\nInput:")
-print("{0:-^50}".format(""))
+print("{0:-^84}".format(""))
 content = [x.split() for x in content] 
 for i in range(0,len(content)):
 	print(' '.join(content[i]))
 
 stemmer = SnowballStemmer("english")
 print("\n\nStemmer:")
-print("{0:-^30}".format(""))
-k=1
+print("{0:-^84}".format(""))
+
 for i in range(0,len(content)):
 	for j in range(0,len(content[i])):
 		#print(content[i][j])
 		output=checkInputType(content[i][j])
-		if("->" in content[i]):
-			print("\n\n\n\tInvalid Input\n\n\n")
-			sys.exit()
-		if("#" in content[i]):
-			k-=1
-			continue
 		if("W" in content[i] and "=" in content[i] and content[i][j]!="."):
 			output+=" "+stemKeywords(content[i][j],stemmer)
-		output+=" "+str(k+1)
+		output+=" "+str(i+1)
 		print("\t"+output)
-	k+=1
 print("\tENDFILE")
 
 print("\n\nParser:")
-print("{0:-^90}".format(""))
+print("{0:-^84}".format(""))
 
-grammar = {
+rules = {
     "ROOT": [["S"]],
     "S": [
         ["NP", "VP"],
@@ -126,7 +118,6 @@ grammar = {
     "NP": [
         ["pronoun"],
         ["noun"],
-	["proper-noun"],
         ["det", "NOMINAL"]
     ],
     "NOMINAL": [
@@ -148,7 +139,6 @@ grammar = {
     "noun": {"flight", "meal", "money", "gift", "astronomers", "stars", "ears", "world", "india", "me"},
     "verb": {"book", "include", "prefer", "saw", "hello"},
     "pronoun": {"i", "she", "me"},
-    "proper-noun":{"joey","shail"},
     "aux": {"does"},
     "prepos": {"from", "to", "on", "near", "through", "with"}
 }
@@ -164,7 +154,7 @@ charts = [[{
 }]]
 
 
-input_arr ="shail book that flight".split()+[""]#input("\n\n\n\tEnter a sentence : ").split() + [""]
+input_arr ="book that flight".split()+[""]#input("\n\n\n\tEnter a sentence : ").split() + [""]
 
 for curr_state in range(len(input_arr)):
 
