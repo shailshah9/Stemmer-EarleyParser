@@ -6,7 +6,7 @@ This is a working code of "Stemmer and Earley Parser" written in python3 using N
 ------------------------
 How to execute the code:
 ------------------------
-Run P1.py
+Run main.py
 ------------------------
 
 
