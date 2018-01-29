@@ -5,6 +5,7 @@ from nltk.stem.snowball import SnowballStemmer
 from pprint import pprint
 from functools import reduce
 
+
 def predictor(rule, state):
     return [{
         "lhs": rule["rhs"][rule["dot"]],
@@ -117,17 +118,57 @@ print("\n\nParser:")
 print("{0:-^94}".format(""))
 
 
+grammar={}
+with open(sys.argv[1]) as f:
+	line=f.readline()
+	tempSplit=str(line)
+	content=[]
+	while line:
+		#tempSplit=str(line)
+		if("#" in tempSplit):
+			tempSplit=f.readline()
+			continue;
+		if(";" in tempSplit):
+			tempSplit=tempSplit.replace(";"," ")
+			temp=tempSplit.split(":")
+			hello=str(temp[1])
+			key=""
+			if(any(x.isupper() for x in hello)):
+				content=hello.split("|")
+				content=[x.strip() for x in content]
+				content=[x.split() for x in content]
+				for i in content:
+					for j in i:
+						if(j.lower()=='prep' or j.lower()=='aux' or j.lower()=='det' or j.lower()=='noun' or j.lower()=='verb' or j.lower()=='proper-noun' or j.lower()=='pronoun'):
+							index_i=content.index(i)
+							content[index_i][content[index_i].index(j)]=j.lower()
+							#print("present")
+						if(j.upper()=='NOMINAL'):
+							index_i=content.index(i)
+							content[index_i][content[index_i].index(j)]=j.upper()
+				key=temp[0].strip().upper()
+				grammar[key]=content
+			else:
+				#content=[hello.split("|")]
+				content=hello.split("|")
+				content=[x.strip() for x in content]
+				s={}
+				s=set(content)
+				key=temp[0].lower().strip()
+				grammar[key]=content
+				
+			#print(content)
+			content=[]
+			tempSplit=""
+			tempSplit=f.readline()
+			continue;
+		line=f.readline()
+		tempSplit+=str(line)
 
 
-'''grammar={'pronoun': [['he'], ['she']], 'proper-noun': [['mary'], ['john']], 'VP': [['verb'], ['verb', 'NP'], ['verb', 'NP', 'PP'], ['verb', 'PP'], ['VP', 'PP']], 'verb': [['do'], ['work'], ['book']], 'aux': [['can'], ['will']], 'PP': [['prep', 'NP']], 'det': [['the'], ['that']], 'S': [['NP', 'VP'], ['aux', 'NP', 'VP'], ['VP']], 'prep': [['in'], ['on'], ['at']], 'NP': [['pronoun'], ['proper-noun'], ['det', 'NOMINAL']], 'NOMINAL': [['noun'], ['NOMINAL', 'noun'], ['NOMINAL', 'PP']], 'noun': [['book'], ['flight']]}
-
+'''grammar={'aux': ['can', 'will'], 'proper-noun': ['mary', 'john'], 'NP': [['pronoun'], ['proper-noun'], ['det', 'NOMINAL']], 'S': [['NP', 'VP'], ['aux', 'NP', 'VP'], ['VP']], 'prep': ['in', 'on', 'at'], 'verb': ['do', 'work', 'book'], 'det': ['the', 'that'], 'NOMINAL': [['noun'], ['NOMINAL', 'noun'], ['NOMINAL', 'PP']], 'pronoun': ['he', 'she'], 'VP': [['verb'], ['verb', 'NP'], ['verb', 'NP', 'PP'], ['verb', 'PP'], ['VP', 'PP']], 'noun': ['book', 'flight'], 'PP': [['prep', 'NP']]}
 '''
-
-grammar={'det': ['the', 'that'], 'verb': ['do', 'work', 'book'], 'S': [['NP', 'VP'], ['aux', 'NP', 'VP'], ['VP']], 'NOMINAL': [['noun'], ['NOMINAL', 'noun'], ['NOMINAL', 'PP']], 'prep': ['in', 'on', 'at'], 'aux': ['can', 'will'], 'PP': [['prep', 'NP']], 'VP': [['verb'], ['verb', 'NP'], ['verb', 'NP', 'PP'], ['verb', 'PP'], ['VP', 'PP']], 'pronoun': ['he', 'she'], 'noun': ['book', 'flight'], 'proper-noun': ['mary', 'john'], 'NP': [['pronoun'], ['proper-noun'], ['det', 'NOMINAL']]}
-
-
 '''
-grammar = {
 	"ROOT": [["S"]],
     "S": [
         ["NP", "VP"],
@@ -194,4 +235,4 @@ for curr_state in range(len(input_arr)):
 print_charts(charts[:-1], input_arr)
 
 print("{0:-^94}".format(""))
-print(grammar['prep'])
+

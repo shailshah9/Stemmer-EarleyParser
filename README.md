@@ -314,6 +314,7 @@ Stemmer:
 Parsed Chart:
 Stemmed string to be parsed: book that flight
 ----------------------------------------------------------------------------------------------
+
 Chart 0	         Root  -> * S                        [0,0]             Dummy Start State    	
 	            S  -> * NP VP                    [0,0]                 Predictor        	
 	            S  -> * aux NP VP                [0,0]                 Predictor        	
@@ -354,6 +355,8 @@ Chart 3	         noun  -> flight *                   [2,3]                  Scan
 	            S  -> VP *                       [0,3]                 Completer        	
 	           VP  -> VP * PP                    [0,3]                 Completer        	
 	         Root  -> S *                        [0,3]                 Completer        
+
+
 ----------------------------------------------------------------------------------------------
 
 
